@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <com.jeongmin.nurimotortester.SplitLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:splitFraction="1"
+        app:splitHandleSize="15dp"
+        app:splitHandleDrawable="@drawable/split_drawable"
+        app:splitOrientation="vertical"
+        app:splitChildMinSize="30dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:alignContent="flex_start"
+                app:alignItems="baseline"
+                app:flexDirection="row"
+                app:flexWrap="wrap">
+
+                <!--            대상 장비-->
+                <LinearLayout style="@style/m_board_grid">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Text_Targetdevice"
+                        android:textColor="@color/Board_TextColor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="5dp"
+                            android:text="@string/Text_ID"
+                            android:textColor="@color/Board_TextColor"
+                            android:textSize="15sp" />
+
+                        <Spinner
+                            android:id="@+id/id_spinner"
+                            android:layout_width="100dp"
+                            android:layout_height="25dp"
+                            android:background="@drawable/board_spinner"
+                            android:textAlignment="center"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="@string/Text_Broadcast"
+                            android:textColor="@color/Board_TextColor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#FFFFFF"
+                            android:text="@string/Button_Refresh"
+                            android:textSize="15sp" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#3393DF"
+                            android:text="@string/Button_Search_Start"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!--            로드 뷰어 설정-->
+                <LinearLayout style="@style/s_board_grid">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Text_Logview"
+                        android:textColor="@color/Board_TextColor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/logOnOff_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Text_LogOn"
+                            android:checked="false"
+                            app:thumbTextPadding="5dp"
+                            android:textSize="18sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!--            통신 응답시간 설정-->
+                <LinearLayout style="@style/l_board_grid">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Title_Tool"
+                        android:textColor="@color/Board_TextColor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tabLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="25dp"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:tabTextAppearance="@style/tab_text">
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Text_POSVEL" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Text_POS" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/Text_VEL" />
+                        </com.google.android.material.tabs.TabLayout>
+
+                        <GridLayout
+                            android:id="@+id/POSVEL_Layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnCount="2"
+                            android:rowCount="2"
+                            android:visibility="visible"
+                            app:layout_constraintStart_toStartOf="@id/tabLayout"
+                            app:layout_constraintTop_toBottomOf="@id/tabLayout">
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:layout_row="0"
+                                android:layout_column="0"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:text="@string/Text_Position"
+                                android:textColor="@color/Board_TextColor"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:layout_row="1"
+                                android:layout_column="0"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:text="@string/Text_Velocity"
+                                android:textColor="@color/Board_TextColor"
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_row="0"
+                                android:layout_column="1"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_row="1"
+                                android:layout_column="1"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:textSize="15sp" />
+                        </GridLayout>
+
+                        <GridLayout
+                            android:id="@+id/POS_Layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnCount="2"
+                            android:rowCount="2"
+                            android:visibility="invisible"
+                            app:layout_constraintStart_toStartOf="@id/tabLayout"
+                            app:layout_constraintTop_toBottomOf="@id/tabLayout">
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:layout_row="0"
+                                android:layout_column="0"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:text="@string/Text_Position"
+                                android:textColor="@color/Board_TextColor"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:layout_row="1"
+                                android:layout_column="0"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:text="@string/Text_Arrival"
+                                android:textColor="@color/Board_TextColor"
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_row="0"
+                                android:layout_column="1"
+                                android:layout_gravity="center|start"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_row="1"
+                                android:layout_column="1"
+                                android:layout_gravity="center|start"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:textSize="15sp" />
+                        </GridLayout>
+
+                        <GridLayout
+                            android:id="@+id/VAL_Layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnCount="2"
+                            android:rowCount="2"
+                            android:visibility="invisible"
+                            app:layout_constraintStart_toStartOf="@id/tabLayout"
+                            app:layout_constraintTop_toBottomOf="@id/tabLayout">
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:layout_row="0"
+                                android:layout_column="0"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:text="@string/Text_Velocity"
+                                android:textColor="@color/Board_TextColor"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="80dp"
+                                android:layout_height="wrap_content"
+                                android:layout_row="1"
+                                android:layout_column="0"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:text="@string/Text_Arrival"
+                                android:textColor="@color/Board_TextColor"
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_row="0"
+                                android:layout_column="1"
+                                android:layout_gravity="center|start"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:textSize="15sp" />
+
+                            <EditText
+                                android:layout_width="120dp"
+                                android:layout_height="wrap_content"
+                                android:layout_row="1"
+                                android:layout_column="1"
+                                android:layout_gravity="center|start"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="2dp"
+                                android:background="@color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:textSize="15sp" />
+                        </GridLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:background="#FFFFFF"
+                            android:text="@string/Button_Refresh"
+                            android:textSize="15sp" />
+
+                        <GridLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:columnCount="2"
+                            android:gravity="center"
+                            android:rowCount="2">
+
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:layout_width="0dp"
+                                android:layout_height="35dp"
+                                android:layout_row="1"
+                                android:layout_column="0"
+                                android:layout_columnWeight="1"
+                                android:background="#FFFFFF"
+                                android:text="@string/Button_Refresh"
+                                android:textSize="15sp" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:layout_width="0dp"
+                                android:layout_height="35dp"
+                                android:layout_row="1"
+                                android:layout_column="1"
+                                android:layout_columnWeight="1"
+                                android:background="#3393DF"
+                                android:text="@string/Button_Search_Start"
+                                android:textSize="15sp" />
+                        </GridLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </com.google.android.flexbox.FlexboxLayout>
+        </ScrollView>
+        <ScrollView
+            android:id="@+id/logView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <LinearLayout
+                android:id="@+id/text_Viewer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:orientation="vertical"/>
+        </ScrollView>
+    </com.jeongmin.nurimotortester.SplitLayout>
+</LinearLayout>

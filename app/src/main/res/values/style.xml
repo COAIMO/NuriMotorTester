@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="l_board_grid">
+        <item name="android:layout_width">220dp</item>
+        <item name="android:layout_height">210dp</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:background">@drawable/layout_border</item>
+    </style>
+
+    <style name="m_board_grid">
+        <item name="android:layout_width">220dp</item>
+        <item name="android:layout_height">160dp</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:background">@drawable/layout_border</item>
+    </style>
+
+    <style name="s_board_grid">
+        <item name="android:layout_width">220dp</item>
+        <item name="android:layout_height">120dp</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:background">@drawable/layout_border</item>
+    </style>
+
+    <style name="Setting_Btn">
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_width">90dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:background">@color/Setting_BtnColor</item>
+        <item name="android:layout_column">1</item>
+        <item name="android:text">@string/Button_Set</item>
+    </style>
+
+    <style name="tab_text" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">10sp</item>
+    </style>
+</resources>
