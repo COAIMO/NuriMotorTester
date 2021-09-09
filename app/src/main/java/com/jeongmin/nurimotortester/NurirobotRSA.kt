@@ -327,7 +327,7 @@ class NurirobotRSA:ICommand {
             val chksum = GetCheckSum()
             if (Data!![4] == chksum) {
                 try {
-                    PacketName = Data!![5].toString().format("%g")
+                    PacketName = ProtocolModeRSA.of(Data!![5]).toString()
                     ret = true
                 } catch (e: Exception) {
                     ret = false

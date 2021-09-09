@@ -1,6 +1,5 @@
 package com.jeongmin.nurimotortester
 
-import android.R
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -19,8 +18,7 @@ import android.widget.*
 import com.hoho.android.usbserial.driver.UsbSerialDriver
 import com.hoho.android.usbserial.driver.UsbSerialPort
 import com.hoho.android.usbserial.driver.UsbSerialProber
-import com.jeongmin.nurimotortester.Nuri.AppState
-import com.jeongmin.nurimotortester.Nuri.Buadrate
+import com.jeongmin.nurimotortester.Nuri.Baudrate
 import com.jeongmin.nurimotortester.Nuri.NuriProtocol
 import com.jeongmin.nurimotortester.databinding.ActivityMainBinding
 import java.io.IOException
@@ -41,20 +39,42 @@ class MainActivity : AppCompatActivity() {
     val READ_WAIT_MILLIS = 50
     val WRITE_WAIT_MILLIS = 1000
     val TAG = "태그"
-
+    val list_of_baudrate = arrayOf(
+        110,
+        300,
+        600,
+        1200,
+        2400,
+        4800,
+        9600,
+        14400,
+        19200,
+        28800,
+        38400,
+        57600,
+        76800,
+        115200,
+        230400,
+        250000,
+        500000,
+        1000000
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         val view = mBinding.root
-        setSpinner()
         setContentView(view)
+        setSpinner()
+//        dataSendThread()
+//        DataReceivedThread()
     }
 
     private fun setSpinner() {
-        var arrayAdapter = ArrayAdapter(
+        val arrayAdapter = ArrayAdapter(
             this,
-            R.layout.simple_spinner_item,
-            Buadrate.values()
+            R.layout.support_simple_spinner_dropdown_item,
+//            Buadrate.values()
+            list_of_baudrate
         )
         mBinding.toolbar.spinnerBaudrate.adapter = arrayAdapter
         mBinding.toolbar.spinnerBaudrate.onItemSelectedListener =
@@ -66,13 +86,15 @@ class MainActivity : AppCompatActivity() {
                     id: Long
                 ) {//스피너가 선택 되었을때
                     if (serialPort == null) {
-                        creatTextview("Baud Rate : " + Buadrate.values().toString() + "선택했습니다.")
+                        creatTextview("Baud Rate : " + list_of_baudrate[position] + "선택했습니다.")
+//                        creatTextview("Baud Rate : " + Buadrate.values()[position] + "선택했습니다.")
+
 //                        SelectSleepMillis = THREAD_SLEEP_MILLIS[position].toLong()
                     } else {
                         creatTextview("시리얼 연결 해제 후 선택해 주세요.")
 
                     }
-                    creatTextview("Baud Rate : " + Buadrate.values()[position] + "선택했습니다.")
+                    creatTextview("Baud Rate : " + Baudrate.values()[position] + "선택했습니다.")
 //                    SelectSleepMillis = THREAD_SLEEP_MILLIS[position].toLong()
                 }
 
@@ -105,6 +127,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private val usbReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent?.action!! == ACTION_USB_PERMISSION) {
@@ -120,7 +143,7 @@ class MainActivity : AppCompatActivity() {
                         serialPort!!.open(usbConnection)
                         serialPort!!.setParameters(
                             selectBaudRate as Int,
-                            8,
+                            UsbSerialPort.DATABITS_8,
                             UsbSerialPort.STOPBITS_1,
                             UsbSerialPort.PARITY_NONE
                         )
@@ -193,17 +216,22 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    val tmpRSA = NurirobotRSA()
-    val nuriProtocol = NuriProtocol().also {
-        it.ID = 0xff.toByte()
-        it.Protocol = 0xa0.toByte()
-    }
+//    val tmpRSA = NurirobotRSA()
+//    val nuriProtocol = NuriProtocol().also {
+//        it.ID = 0xff.toByte()
+//        it.Protocol = 0xa0.toByte()
+//    }
     private fun dataSendThread() {
         if (serialPort == null) return
 //        val buff = chk_Header2.plus(initialData!!)
 //        val buff2 = buff.plus(chk_Header)
         dataSendThread = Thread {
             while (isRunning) {
+                var tmpRSA = NurirobotRSA()
+                tmpRSA.PROT_Feedback(NuriProtocol().also {
+                    it.ID = 0xff.toByte()
+                    it.Protocol = 0xa0.toByte()
+                })
 //                serialPort?.write()
                 Log.d(TAG, "port1SendThread-start")
 
@@ -211,25 +239,27 @@ class MainActivity : AppCompatActivity() {
         }
         dataSendThread!!.start()
     }
+
     // 대상 아이디 목록을 생성한다.
 
-    fun checkIDList(){
-        val state = AppState()
-        val ttt = mutableListOf<Byte>()
-        if (state.SearchDevice!!.isNotEmpty()){
-            for (item in state.SearchDevice!!){
-                ttt.add(item)
-            }
-        }else{
-            for (i in 0..254){
-                ttt.add(i.toByte())
-            }
-        }
-        val TargetIDs = ttt
+//    fun checkIDList(){
+//        val state = AppState()
+//        if(state.IsConnect!!){
+//            creatTextview("Alert_Serial_Connected")
+//        }
+//        val ttt = mutableListOf<Byte>()
+//        if (state.SearchDevice!!.isNotEmpty()){
+//            for (item in state.SearchDevice!!){
+//                ttt.add(item)
+//            }
+//        }else{
+//            for (i in 0..254){
+//                ttt.add(i.toByte())
+//            }
+//        }
+//        val TargetIDs = ttt
+//
+//    }
 
-    }
 
-    fun checkPing(id:Byte, isSpControl:Boolean = true){
-        var tmp = NurirobotRSA()
-    }
 }

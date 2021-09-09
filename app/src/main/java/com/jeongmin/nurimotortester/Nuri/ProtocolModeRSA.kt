@@ -1,6 +1,6 @@
 package com.jeongmin.nurimotortester.Nuri
 
-enum class ProtocolModeRSA(data: Byte) {
+enum class ProtocolModeRSA(val byte: Byte) {
     /// <summary>
     /// 없음
     /// </summary>
@@ -169,5 +169,8 @@ enum class ProtocolModeRSA(data: Byte) {
     /// <summary>
     /// 펌웨어 버전 피드백(수신)
     /// </summary>
-    FEEDFirmware(0xFD.toByte())
+    FEEDFirmware(0xFD.toByte());
+
+    companion object : EnumCodesMap<ProtocolModeRSA, Byte> by EnumCodesMap({ it.byte })
+
 }

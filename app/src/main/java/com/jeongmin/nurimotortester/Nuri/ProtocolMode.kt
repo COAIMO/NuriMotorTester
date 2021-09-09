@@ -1,6 +1,6 @@
 package com.jeongmin.nurimotortester.Nuri
 
-enum class ProtocolMode(byte: Byte) {
+enum class ProtocolMode(val byte: Byte) {
 
     /// <summary>
     /// 없음
@@ -175,5 +175,7 @@ enum class ProtocolMode(byte: Byte) {
     /// <summary>
     /// 펌웨어 버전 피드백(수신)
     /// </summary>
-    FEEDFirmware(0xFD.toByte())
+    FEEDFirmware(0xFD.toByte());
+    companion object : EnumCodesMap<ProtocolMode, Byte> by EnumCodesMap({ it.byte })
+
 }
