@@ -2,13 +2,13 @@ package com.jeongmin.nurimotortester
 
 import android.util.Log
 import com.jeongmin.nurimotortester.Nuri.*
+import java.lang.Math.round
 import java.nio.ByteBuffer
 import kotlin.experimental.inv
 
 
 class NurirobotMC : ICommand {
     val TAG = "TAG"
-    lateinit var _SerialProcess: ISerialProcess
     override var PacketName: String? = null
     override var Data: ByteArray? = null
     override var ID: Byte? = null
@@ -139,8 +139,8 @@ class NurirobotMC : ICommand {
                 nuripos.Protocol = Data!![5]
                 nuripos.ID = Data!![2]
                 nuripos.Direction = Data!![6] as Direction
-                nuripos.Pos =
-                    ByteBuffer.wrap(Data!!.slice(6..7).reversed().toByteArray()).getFloat() * 0.01f
+                nuripos.Speed =
+                    ByteBuffer.wrap(Data!!.slice(7..9).reversed().toByteArray()).getFloat() * 0.1f
                 nuripos.Arrivetime = Data!![9] * 0.1f
                 nuripos
             }
@@ -405,6 +405,8 @@ class NurirobotMC : ICommand {
                 val nuriRatio = NuriRatio()
                 nuriRatio.Protocol = Data!![5]
                 nuriRatio.ID = Data!![2]
+                nuriRatio.Ratio =
+                    ByteBuffer.wrap(Data!!.slice(6..7).reversed().toByteArray()).getFloat() * 0.1f
                 nuriRatio
             }
             ProtocolMode.FEEDCtrlOnOff -> {
@@ -544,7 +546,7 @@ class NurirobotMC : ICommand {
         PROT_ControlAcceleratedPos(nuriPosSpeedAclCtrl)
     }
 
-    /// <summary>
+
     /// 3. 가감속 속도제어(송신)
     /// </summary>
     /// <param name="arg"></param>
@@ -552,8 +554,14 @@ class NurirobotMC : ICommand {
         val data = ByteArray(4)
         data[0] = (if (arg.Direction === Direction.CCW) 0x00 else 0x01).toByte()
 //        val tmpspd = floatToByteArray(Math.round(arg.Pos!! / 0.01f).toFloat())?.reversedArray()
-        val tmpspd = floatToByteArray(Math.round(arg.Speed!! / 0.1f).toFloat())?.reversedArray()
-        tmpspd?.copyInto(data, 1, 0, 2)
+//        val tmpspd = floatToByteArray(Math.round(arg.Speed!! / 0.1f).toFloat())?.reversedArray()
+//        tmpspd?.copyInto(data, 1, 0, 2)
+//        data[3] = Math.round(arg.Arrivetime!! / 0.1f).toInt().toByte()
+//        BuildProtocol(arg.ID!!, 0x06, 0x03, data)
+
+        val tmpspd = round(arg.Speed!! / 0.1f)
+        data[2] = (tmpspd and 0xFF).toByte()
+        data[1] = ((tmpspd shr 8) and 0xff).toByte()
         data[3] = Math.round(arg.Arrivetime!! / 0.1f).toInt().toByte()
         BuildProtocol(arg.ID!!, 0x06, 0x03, data)
     }
@@ -884,10 +892,10 @@ class NurirobotMC : ICommand {
     /// </summary>
     /// <param name="arg"></param>
     fun PROT_Feedback(arg: NuriProtocol) {
-        if (arg.Protocol!! >= ProtocolMode.REQPing as Byte &&
-            arg.Protocol!! <= ProtocolMode.REQFirmware as Byte
+        if (arg.Protocol!! >= ProtocolMode.REQPing.byte &&
+            arg.Protocol!! <= ProtocolMode.REQFirmware.byte
         ) {
-            BuildProtocol(arg.ID!!, 0x02, arg.Protocol as Byte, byteArrayOf())
+            BuildProtocol(arg.ID!!, 0x02, arg.Protocol!!.toByte(), byteArrayOf())
         }
     }
 
@@ -910,7 +918,7 @@ class NurirobotMC : ICommand {
     /// <param name="arg"></param>
     /// <param name="isSend">전송여부 기본은 전송안함</param>
     fun PROT_FeedbackPing(arg: NuriProtocol, isSend: Boolean = false) {
-        BuildProtocol(arg.ID!!, 0x02, ProtocolMode.FEEDPing as Byte, byteArrayOf(), isSend)
+        BuildProtocol(arg.ID!!, 0x02, ProtocolMode.FEEDPing.byte, byteArrayOf(), isSend)
     }
 
     /// <summary>
